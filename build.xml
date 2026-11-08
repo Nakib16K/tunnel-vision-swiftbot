@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Tunnel Vision - SwiftBot" default="compile" basedir=".">
+    <property name="mainclass" value="io.github.nakib16k.tunnelvision.TunnelVisionApp" />
+    <!-- Local-only Java 11 target. No remote deployment or robot launch targets. -->
+    <target name="check-dependency">
+        <available file="lib/SwiftBotAPI-4.0.2.jar" property="swiftbot.available" />
+        <fail unless="swiftbot.available"
+              message="Missing lib/SwiftBotAPI-4.0.2.jar. Obtain your copy legally; see lib/README.md." />
+    </target>
+    <target name="compile" depends="check-dependency">
+        <mkdir dir="bin" />
+        <javac srcdir="src" destdir="bin" release="11" encoding="UTF-8"
+               includeantruntime="false">
+            <classpath><pathelement location="lib/SwiftBotAPI-4.0.2.jar" /></classpath>
+        </javac>
+    </target>
+    <target name="test" depends="compile">
+        <mkdir dir="test-bin" />
+        <javac srcdir="test" destdir="test-bin" release="11" encoding="UTF-8"
+               includeantruntime="false">
+            <classpath>
+                <pathelement location="bin" />
+                <pathelement location="lib/SwiftBotAPI-4.0.2.jar" />
+            </classpath>
+        </javac>
+        <java classname="io.github.nakib16k.tunnelvision.CoreLogicTests" fork="true" failonerror="true">
+            <classpath><pathelement location="test-bin"/><pathelement location="bin"/><pathelement location="lib/SwiftBotAPI-4.0.2.jar"/></classpath>
+        </java>
+        <java classname="io.github.nakib16k.tunnelvision.ReliabilityTests" fork="true" failonerror="true">
+            <classpath><pathelement location="test-bin"/><pathelement location="bin"/><pathelement location="lib/SwiftBotAPI-4.0.2.jar"/></classpath>
+        </java>
+        <java classname="io.github.nakib16k.tunnelvision.IndependentRegressionTests" fork="true" failonerror="true">
+            <classpath><pathelement location="test-bin"/><pathelement location="bin"/><pathelement location="lib/SwiftBotAPI-4.0.2.jar"/></classpath>
+        </java>
+    </target>
+    <target name="clean">
+        <delete dir="bin" />
+        <delete dir="test-bin" />
+    </target>
+</project>

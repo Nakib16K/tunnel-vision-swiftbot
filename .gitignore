@@ -1,0 +1,24 @@
+# Build output
+/bin/
+/build/
+/test-bin/
+/dist/
+*.class
+*.jar
+
+# Keep independently provided third-party libraries local
+/lib/*.jar
+
+# IDE-generated local state
+/.metadata/
+/.idea/
+*.iml
+
+# Runtime output (never commit recorded sensor/session information)
+LOG.txt
+tempImg.png
+*.log
+
+# Operating system
+.DS_Store
+Thumbs.db
